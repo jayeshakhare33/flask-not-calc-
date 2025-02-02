@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang=\"en\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>Advanced Scientific Calculator</title>
+    <link rel=\"stylesheet\" href=\"{{ url_for('static', filename='css/style.css') }}\">
+    <link href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css\" rel=\"stylesheet\">
+    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap\" rel=\"stylesheet\">
+</head>
+<body>
+    <div class=\"calculator-container\">
+        <div class=\"calculator-header\">
+            <h1><i class=\"fas fa-calculator\"></i> Scientific Calculator Pro</h1>
+            <div class=\"mode-toggle\">
+                <button id=\"basicMode\" class=\"mode-btn active\">Basic</button>
+                <button id=\"scientificMode\" class=\"mode-btn\">Scientific</button>
+                <button id=\"programmingMode\" class=\"mode-btn\">Programming</button>
+            </div>
+        </div>
+
+        <div class=\"calculator-body\">
+            <div class=\"left-panel\">
+                <!-- Display Section -->
+                <div class=\"display-section\">
+                    <div class=\"memory-indicator\" id=\"memoryIndicator\">M</div>
+                    <div class=\"expression-display\" id=\"expressionDisplay\"></div>
+                    <div class=\"main-display\" id=\"mainDisplay\">0</div>
+                    <div class=\"angle-mode\">
+                        <span class=\"angle-label\">Angle:</span>
+                        <button id=\"angleMode\" class=\"angle-btn\">DEG</button>
+                    </div>
+                </div>
+
+                <!-- Button Grid -->
+                <div class=\"button-grid\" id=\"buttonGrid\">
+                    <!-- Memory Row -->
+                    <button class=\"btn memory-btn\" data-action=\"memory-clear\">MC</button>
+                    <button class=\"btn memory-btn\" data-action=\"memory-recall\">MR</button>
+                    <button class=\"btn memory-btn\" data-action=\"memory-add\">M+</button>
+                    <button class=\"btn memory-btn\" data-action=\"memory-store\">MS</button>
+
+                    <!-- Function Row 1 -->
+                    <button class=\"btn function-btn\" data-function=\"reciprocal\">1/x</button>
+                    <button class=\"btn function-btn\" data-function=\"square\">x²</button>
+                    <button class=\"btn function-btn\" data-function=\"sqrt\">√x</button>
+                    <button class=\"btn operation-btn\" data-operation=\"/\">/</button>
+
+                    <!-- Function Row 2 -->
+                    <button class=\"btn function-btn\" data-function=\"sin\">sin</button>
+                    <button class=\"btn number-btn\" data-number=\"7\">7</button>
+                    <button class=\"btn number-btn\" data-number=\"8\">8</button>
+                    <button class=\"btn number-btn\" data-number=\"9\">9</button>
+
+                    <!-- Function Row 3 -->
+                    <button class=\"btn function-btn\" data-function=\"cos\">cos</button>
+                    <button class=\"btn number-btn\" data-number=\"4\">4</button>
+                    <button class=\"btn number-btn\" data-number=\"5\">5</button>
+                    <button class=\"btn number-btn\" data-number=\"6\">6</button>
+
+                    <!-- Function Row 4 -->
+                    <button class=\"btn function-btn\" data-function=\"tan\">tan</button>
+                    <button class=\"btn number-btn\" data-number=\"1\">1</button>
+                    <button class=\"btn number-btn\" data-number=\"2\">2</button>
+                    <button class=\"btn number-btn\" data-number=\"3\">3</button>
+
+                    <!-- Function Row 5 -->
+                    <button class=\"btn function-btn\" data-function=\"log\">log</button>
+                    <button class=\"btn special-btn\" data-action=\"sign\">±</button>
+                    <button class=\"btn number-btn\" data-number=\"0\">0</button>
+                    <button class=\"btn special-btn\" data-action=\"decimal\">.</button>
+
+                    <!-- Operation Column -->
+                    <button class=\"btn operation-btn\" data-operation=\"*\">×</button>
+                    <button class=\"btn operation-btn\" data-operation=\"-\">-</button>
+                    <button class=\"btn operation-btn\" data-operation=\"+\">+</button>
+                    <button class=\"btn equals-btn\" data-action=\"equals\">=</button>
+
+                    <!-- Clear Row -->
+                    <button class=\"btn clear-btn\" data-action=\"clear-entry\">CE</button>
+                    <button class=\"btn clear-btn\" data-action=\"clear\">C</button>
+                    <button class=\"btn clear-btn\" data-action=\"backspace\">⌫</button>
+                    <button class=\"btn operation-btn\" data-operation=\"^\">x^y</button>
+                </div>
+
+                <!-- Scientific Panel (Hidden by default) -->
+                <div class=\"scientific-panel\" id=\"scientificPanel\" style=\"display: none;\">
+                    <div class=\"scientific-grid\">
+                        <button class=\"btn function-btn\" data-function=\"asin\">sin⁻¹</button>
+                        <button class=\"btn function-btn\" data-function=\"acos\">cos⁻¹</button>
+                        <button class=\"btn function-btn\" data-function=\"atan\">tan⁻¹</button>
+                        <button class=\"btn function-btn\" data-function=\"exp\">eˣ</button>
+                        
+                        <button class=\"btn function-btn\" data-function=\"sinh\">sinh</button>
+                        <button class=\"btn function-btn\" data-function=\"cosh\">cosh</button>
+                        <button class=\"btn function-btn\" data-function=\"tanh\">tanh</button>
+                        <button class=\"btn function-btn\" data-function=\"ln\">ln</button>
+                        
+                        <button class=\"btn constant-btn\" data-constant=\"π\">π</button>
+                        <button class=\"btn constant-btn\" data-constant=\"e\">e</button>
+                        <button class=\"btn function-btn\" data-function=\"factorial\">n!</button>
+                        <button class=\"btn function-btn\" data-function=\"cbrt\">∛x</button>
+                        
+                        <button class=\"btn special-btn\" data-action=\"open-paren\">(</button>
+                        <button class=\"btn special-btn\" data-action=\"close-paren\">)</button>
+                        <button class=\"btn operation-btn\" data-operation=\"%\">mod</button>
+                        <button class=\"btn function-btn\" data-function=\"abs\">|x|</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class=\"right-panel\">
+                <!-- History Section -->
+                <div class=\"history-section\">
+                    <div class=\"history-header\">
+                        <h3><i class=\"fas fa-history\"></i> History</h3>
+                        <button class=\"btn clear-history-btn\" id=\"clearHistory\">
+                            <i class=\"fas fa-trash\"></i>
+                        </button>
+                    </div>
+                    <div class=\"history-list\" id=\"historyList\">
+                        <div class=\"no-history\">No calculations yet</div>
+                    </div>
+                </div>
+
+                <!-- Constants Section -->
+                <div class=\"constants-section\">
+                    <div class=\"constants-header\">
+                        <h3><i class=\"fas fa-atom\"></i> Constants</h3>
+                    </div>
+                    <div class=\"constants-grid\">
+                        <button class=\"btn constant-btn\" data-constant=\"π\" title=\"Pi\">π</button>
+                        <button class=\"btn constant-btn\" data-constant=\"e\" title=\"Euler's number\">e</button>
+                        <button class=\"btn constant-btn\" data-constant=\"φ\" title=\"Golden ratio\">φ</button>
+                        <button class=\"btn constant-btn\" data-constant=\"γ\" title=\"Euler-Mascheroni\">γ</button>
+                        <button class=\"btn constant-btn\" data-constant=\"c\" title=\"Speed of light\">c</button>
+                        <button class=\"btn constant-btn\" data-constant=\"g\" title=\"Gravity\">g</button>
+                    </div>
+                </div>
+
+                <!-- Expression Input -->
+                <div class=\"expression-section\">
+                    <div class=\"expression-header\">
+                        <h3><i class=\"fas fa-code\"></i> Expression Mode</h3>
+                    </div>
+                    <div class=\"expression-input-container\">
+                        <textarea 
+                            id=\"expressionInput\" 
+                            class=\"expression-input\" 
+                            placeholder=\"Enter complex expression...&#10;Examples:&#10;• sin(30) + cos(60)&#10;• sqrt(16) * log(100)&#10;• (5^2 + 3^2) / 2\"
+                            rows=\"4\"
+                        ></textarea>
+                        <button class=\"btn evaluate-btn\" id=\"evaluateExpression\">
+                            <i class=\"fas fa-play\"></i> Evaluate
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div class=\"modal\" id=\"errorModal\">
+            <div class=\"modal-content\">
+                <div class=\"modal-header\">
+                    <h3><i class=\"fas fa-exclamation-triangle\"></i> Error</h3>
+                    <button class=\"modal-close\" id=\"closeModal\">&times;</button>
+                </div>
+                <div class=\"modal-body\">
+                    <p id=\"errorMessage\"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src=\"{{ url_for('static', filename='js/calculator.js') }}\"></script>
+</body>
+</html>
