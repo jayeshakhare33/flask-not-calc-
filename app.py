@@ -122,12 +122,10 @@ def index():
 def calculate():
     data = request.json
     operation_type = data.get('type')
-    
     if operation_type == 'basic':
         num1 = data.get('num1')
         num2 = data.get('num2')
         operation = data.get('operation')
-        
         result = calculator.basic_operation(num1, num2, operation)
         if result is not None:
             expression = f"{num1} {operation} {num2}"
