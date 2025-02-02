@@ -76,7 +76,7 @@ class ScientificCalculator:
             expression = expression.replace('π', str(math.pi))
             expression = expression.replace('e', str(math.e))
             expression = expression.replace('^', '**')
-            
+
             # Add numpy functions for advanced calculations
             safe_dict = {
                 '__builtins__': {},
