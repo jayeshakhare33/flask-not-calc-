@@ -95,7 +95,7 @@
       color: white;
       box-shadow: 0 2px 4px var(--shadow-light);
   }
-  
+
   /* Calculator Body */
   .calculator-body {
       display: grid;
